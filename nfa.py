@@ -5,7 +5,7 @@ class NFA:
 		self.transitions = {}
 		self.start_state = 0
 		self.num_states = 1
-		self.accept = {}
+		self.accept = set()
 		self.epsilon = type("epsilon", (object,), {})()
 		self.alphabet = set()
 
@@ -58,7 +58,8 @@ class NFA:
 			self.add_transition(current_state, letter, next_state)
 			current_state = next_state
 
-		self.accept[next_state] = True
+		#self.accept[next_state] = True
+		self.accept.add(next_state)
 
 	def add_word(self, word):
 		first_state = self.increment_states()
@@ -70,7 +71,8 @@ class NFA:
 			self.add_transition(current_state, letter, next_state)
 			current_state = next_state
 
-		self.accept[next_state] = True
+		#self.accept[next_state] = True
+		self.accept.add(next_state)
 
 	def is_accepting_state(self, state):
 		if state in self.accept:
