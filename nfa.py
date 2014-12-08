@@ -66,6 +66,7 @@ class NFA:
 		self.add_transition(self.start_state, self.epsilon, first_state)
 
 		current_state = first_state
+		next_state = -1
 		for letter in word:
 			next_state = self.increment_states()
 			self.add_transition(current_state, letter, next_state)
@@ -96,8 +97,51 @@ class NFA:
 
 		return self.is_accepting(current)
 
+	def create_word_matcher(self, word, append_to_state):
+		if not word:
+			return None
+
+		first_state = self.increment_states()
+
+		self.add_transition(append_to_state, self.epsilon, first_state)
+
+		current_state = first_state
+		next_state = -1
+		for letter in word:
+			next_state = self.increment_states()
+			self.add_transition(current_state, letter, next_state)
+			current_state = next_state
+
+		end_state = next_state;
+		return end_state
+
+	def create_any_matcher(self, alphabet, append_to_state):
+		if not word:
+			return None
+
+		first_state = self.increment_states()
+		end_state = self.increment_states()
+
+		self.add_transition(append_to_state, self.epsilon, first_state)
+
+		for letter in alphabet:
+			self.add_transition(first_state, letter, end_state)
+
+		return end_state
+
+	def create_repetition_matcher(self, num_repetition, create_matcher_func, argument, append_to_state):
+		end_state = create_matcher_func(argument, append_to_state)
+		num_repetition -= 1
+		while num_repetition > 0:
+			other_end_state = create_matcher_func(argument, end_state)
+			end_state = other_end_state
+			num_repetition -= 1
+
+		return end_state
 
 if __name__ == '__main__':
+	import string
+
 	nfa = NFA()
 	nfa.add_word('foreach')
 	nfa.add_word('for')
@@ -111,3 +155,20 @@ if __name__ == '__main__':
 		print(word + " was accepted")
 	else:
 		print (word + " was rejected")
+
+	manual_nfa = NFA()
+	kot_end = manual_nfa.create_word_matcher("kot", manual_nfa.start_state)
+	manual_nfa.accept.add(kot_end)
+	print("Manual nfa for kot: " + str(manual_nfa.run_on_word("kot")))
+	print("Manual nfa for foreach: " + str(manual_nfa.run_on_word("foreach")))
+
+	any_end = manual_nfa.create_any_matcher(string.ascii_uppercase, kot_end)
+	manual_nfa.accept.add(any_end)
+	print("Manual nfa for kotO: " + str(manual_nfa.run_on_word("kotO")))
+	print("Manual nfa for koto: " + str(manual_nfa.run_on_word("koto")))
+
+	rep_end = manual_nfa.create_repetition_matcher(2, manual_nfa.create_word_matcher, "cat", any_end)
+	manual_nfa.accept.add(rep_end)
+	print("Manual nfa for kotVcatcat: " + str(manual_nfa.run_on_word("kotVcatcat")))
+	print("Manual nfa for kotVcat: " + str(manual_nfa.run_on_word("kotVcat")))
+	print("Manual nfa for kotV: " + str(manual_nfa.run_on_word("kotV")))
