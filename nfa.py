@@ -1,4 +1,6 @@
 #!/bin/env python3
+# Deterministic Finite State Automaton
+# Copyright (c) 2014 Tomasz Truszkowski
 
 class NFA:
 	def __init__(self):
@@ -116,7 +118,7 @@ class NFA:
 		return end_state
 
 	def create_any_matcher(self, alphabet, append_to_state):
-		if not word:
+		if not alphabet:
 			return None
 
 		first_state = self.increment_states()

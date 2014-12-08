@@ -1,3 +1,8 @@
+#!/bin/env python3
+# Nondeterministic Finite State Automaton
+# Copyright (c) 2014 Tomasz Truszkowski
+# All rights reserved.
+
 import nfa, itertools
 
 from collections import deque
@@ -133,7 +138,7 @@ def minimize(dfa):
 			if next_state:
 				next_set = which_set(next_state, T)
 				next_id = set_to_state[next_set]
-				#print("FROM " + str(current_id) + " TO " + str(next_id) + " ON " + letter)
+				print("FROM " + str(current_id) + " TO " + str(next_id) + " ON " + letter)
 				minimal_dfa.add_transition(current_id, letter, next_id)
 
 	return minimal_dfa
@@ -154,6 +159,15 @@ if __name__ == '__main__':
 	print(d.run_on_word('fee'))
 	
 	minimal_d = minimize(d)
+
+	print("DFA states: " + str(d.transitions.keys()))
+	print("MDFA states: " + str(minimal_d.transitions.keys()))
+
+	print("DFA transitions: " + str(d.transitions))
+	print("MDFA transitions: " + str(minimal_d.transitions))
+
+	print("DFA start_state: " + str(d.transitions.keys()))
+	print("MDFA start_state: " + str(minimal_d.transitions.keys()))
 
 	print(minimal_d.run_on_word('fie'))
 	print(minimal_d.run_on_word('fee'))	
