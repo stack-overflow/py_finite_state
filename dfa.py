@@ -138,7 +138,7 @@ def minimize(dfa):
 			if next_state:
 				next_set = which_set(next_state, T)
 				next_id = set_to_state[next_set]
-				print("FROM " + str(current_id) + " TO " + str(next_id) + " ON " + letter)
+				#print("FROM " + str(current_id) + " TO " + str(next_id) + " ON " + letter)
 				minimal_dfa.add_transition(current_id, letter, next_id)
 
 	return minimal_dfa
@@ -171,3 +171,41 @@ if __name__ == '__main__':
 
 	print(minimal_d.run_on_word('fie'))
 	print(minimal_d.run_on_word('fee'))	
+
+
+	print("TEST MINIMIZE")
+
+	test_n = nfa.NFA()
+	d1 = test_n.increment_states()
+	test_n.add_transition(test_n.start_state, 'a', d1)
+	d2 = test_n.increment_states()
+	test_n.add_transition(d1, 'b', d2)
+	test_n.add_transition(d2, 'b', d2)
+	d3 = test_n.increment_states()
+	test_n.add_transition(d1, 'c', d3)
+	test_n.add_transition(d3, 'c', d3)
+
+	test_n.add_transition(d3, 'b', d2)
+	test_n.add_transition(d2, 'c', d3)
+
+	test_n.accept.add(d1)
+	test_n.accept.add(d2)
+	test_n.accept.add(d3)
+
+	print(test_n.run_on_word('a'))
+	print(test_n.run_on_word('ab'))
+	print(test_n.run_on_word('abbbbccc'))
+
+	test_d = from_nfa(test_n)
+	print(test_d.transitions)
+
+	print(test_d.run_on_word('a'))
+	print(test_d.run_on_word('ab'))
+	print(test_d.run_on_word('abbbbccc'))
+
+	min_test_d = minimize(test_d)
+	print(min_test_d.transitions)
+
+	print(min_test_d.run_on_word('a'))
+	print(min_test_d.run_on_word('ab'))
+	print(min_test_d.run_on_word('abbbbccc'))

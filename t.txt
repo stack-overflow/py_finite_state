@@ -1,0 +1,24 @@
+Build machine for word: CGG
+Build machine for any
+Build machine for repetition: ['4', '7']
+Build machine for negation: {'B', 'C', 'A'}
+Build machine for word: G
+Build machine for any
+Build machine for repetition: ['3']
+Build machine for word: C
+Build machine for any
+Build machine for repetition: ['5']
+Build machine for word: C
+Build machine for any
+Build machine for repetition: ['3', '5']
+Build machine for alternative: {'G', 'N', 'H'}
+Build machine for any
+Build machine for alternative: {'M', 'F', 'Y', 'W'}
+Build machine for any
+Build machine for repetition: ['2']
+Build machine for word: QC
+True
+{frozenset({84}), frozenset({106}), frozenset({49}), frozenset({77}), frozenset({50}), frozenset({153}), frozenset({78}), frozenset({87}), frozenset({21}), frozenset({154}), frozenset({33}), frozenset({44}), frozenset({98}), frozenset({187}), frozenset({137}), frozenset({5}), frozenset({138}), frozenset({70}), frozenset({111}), frozenset({104}), frozenset({58}), frozenset({179}), frozenset({95}), frozenset({29}), frozenset({130}), frozenset({88}), frozenset({30}), frozenset({39}), frozenset({165}), frozenset({32}), frozenset({143}), frozenset({188}), frozenset({13}), frozenset({14}), frozenset({23}), frozenset({213}), frozenset({80}), frozenset({214}), frozenset({189}), frozenset({123}), frozenset({73}), frozenset({190}), frozenset({197}), frozenset({64}), frozenset({6}), frozenset({47}), frozenset({173}), frozenset({40}), frozenset({174}), frozenset({183}), frozenset({115}), frozenset({1}), frozenset({12}), frozenset({66}), frozenset({24}), frozenset({222}), frozenset({99}), frozenset({224}), frozenset({166}), frozenset({124}), frozenset({203}), frozenset({25}), frozenset({196}), frozenset({26}), frozenset({147}), frozenset({150}), frozenset({191}), frozenset({59}), frozenset({184}), frozenset({9}), frozenset({116}), frozenset({10}), frozenset({131}), frozenset({209}), frozenset({156}), frozenset({109}), frozenset({210}), frozenset({185}), frozenset({100}), frozenset({51}), frozenset({176}), frozenset({193}), frozenset({204}), frozenset({2}), frozenset({169}), frozenset({148}), frozenset({37}), frozenset({170}), frozenset({102}), frozenset({15}), frozenset({60}), frozenset({114}), frozenset({139}), frozenset({217}), frozenset({132}), frozenset({85}), frozenset({218}), frozenset({86}), frozenset({127}), frozenset({61}), frozenset({162}), frozenset({120}), frozenset({62}), frozenset({199}), frozenset({69}), frozenset({202}), frozenset({145}), frozenset({45}), frozenset({146}), frozenset({46}), frozenset({55}), frozenset({112}), frozenset({159}), frozenset({94}), frozenset({103}), frozenset({96}), frozenset({38}), frozenset({207}), frozenset({75}), frozenset({200}), frozenset({68}), frozenset({19}), frozenset({144}), frozenset({22}), frozenset({63}), frozenset({56}), frozenset({135}), frozenset({3}), frozenset({128}), frozenset({81}), frozenset({28}), frozenset({82}), frozenset({57}), frozenset({181}), frozenset({48}), frozenset({65}), frozenset({182}), frozenset({76}), frozenset({219}), frozenset({41}), frozenset({20}), frozenset({42}), frozenset({163}), frozenset({11}), frozenset({136}), frozenset({89}), frozenset({4}), frozenset({90}), frozenset({211}), frozenset({34}), frozenset({71}), frozenset({180}), frozenset({74}), frozenset({195}), frozenset({17}), frozenset({220}), frozenset({18}), frozenset({171}), frozenset({164}), frozenset({117}), frozenset({118}), frozenset({31}), frozenset({221}), frozenset({155}), frozenset({212}), frozenset({101}), frozenset({177}), frozenset({79}), frozenset({205}), frozenset({178}), frozenset({72}), frozenset({206}), frozenset({215}), frozenset({149}), frozenset({16}), frozenset({161}), frozenset({172}), frozenset({125}), frozenset({126}), frozenset({7}), frozenset({133}), frozenset({0}), frozenset({198}), frozenset({107}), frozenset({110}), frozenset({119}), frozenset({53}), frozenset({186}), frozenset({54}), frozenset({223}), frozenset({157}), frozenset({91}), frozenset({216}), frozenset({158}), frozenset({167}), frozenset({35}), frozenset({160}), frozenset({113}), frozenset({141}), frozenset({8}), frozenset({142}), frozenset({151}), frozenset({83}), frozenset({208}), frozenset({97}), frozenset({108}), frozenset({201}), frozenset({52}), frozenset({67}), frozenset({192}), frozenset({134}), frozenset({175}), frozenset({92}), frozenset({43}), frozenset({168}), frozenset({121}), frozenset({36}), frozenset({122}), frozenset({129}), frozenset({140}), frozenset({93}), frozenset({194}), frozenset({27}), frozenset({152}), frozenset({105})}
+True
+Non minimal DFA transitions table size: 224
+Minimal DFA transitions table size: 224

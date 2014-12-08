@@ -29,7 +29,7 @@ def parse_uppercase(in_str, i):
 		if not in_str[i].isupper() and in_str[i] != '-':
 			i -= 1
 
-	print("Build machine for word: " + lexeme)
+	#print("Build machine for word: " + lexeme)
 	return i, lexeme
 
 def parse_alternative(in_str, i):
@@ -43,7 +43,7 @@ def parse_alternative(in_str, i):
 		alt_letters.add(in_str[i])
 		i += 1
 
-	print("Build machine for alternative: " + str(alt_letters))
+	#print("Build machine for alternative: " + str(alt_letters))
 	return i, alt_letters
 
 def parse_negation(in_str, i):
@@ -57,7 +57,7 @@ def parse_negation(in_str, i):
 		neg_letters.add(in_str[i])
 		i += 1
 
-	print("Build machine for negation: " + str(neg_letters))
+	#print("Build machine for negation: " + str(neg_letters))
 	return i, PROSITE_ALPHABET_SET - neg_letters
 
 def parse_repetition(in_str, i):
@@ -79,29 +79,23 @@ def parse_repetition(in_str, i):
 
 	repetition_range.append(num)
 
-	print("Build machine for repetition: " + str(repetition_range))
+	#print("Build machine for repetition: " + str(repetition_range))
 	return i, repetition_range
 
 def parse_any(in_str, i):
 	if in_str[i] != 'x':
 		return None
 	#i += 1
-	print("Build machine for any")
+	#print("Build machine for any")
 	return i, PROSITE_ALPHABET_SET
 
-if __name__ == '__main__':
-	regex = 'C-G-G-x(4,7)-{ABC}-G-x(3)-C-x(5)-C-x(3,5)-[NHG]-x-[FYWM]-x(2)-Q-C'
-	valid = "CGGVVVVNGVVVCVVVVVCVVVGVMVVQC"
-
-	machine_parts = []
+def compile(regex):
 	i = 0
-	state = 0
-	lexeme = ""
 	argument = None
 
 	prosite_nfa = nfa.NFA()
 	create_matcher_func = None
-	append_to_state = prosite_nfa.start_state
+	append_to_state = [prosite_nfa.start_state]
 
 	while i < len(regex):
 		while regex[i] == '-':
@@ -121,29 +115,53 @@ if __name__ == '__main__':
 
 		i += 1
 
-		rep = 1
+		rep = range(1, 2)
 		if i < len(regex) and regex[i] == '(':
 			i, repetition_range = parse_repetition(regex, i)
-			#print("Repetition: " + repetition_range[0])
-			rep = int(repetition_range[0])
+		
+			begin = int(repetition_range[0])
+			end = int(repetition_range[-1]) + 1
+			rep = range(begin, end)
+
 			i += 1
 
-		end_state = prosite_nfa.create_repetition_matcher(rep, create_matcher_func, argument, append_to_state)
-		append_to_state = end_state
+		append_to_state = prosite_nfa.create_repetition_matcher_experimental(rep, create_matcher_func, argument, append_to_state)
 
-	prosite_nfa.accept.add(append_to_state)
-	prosite_dfa = dfa.from_nfa(prosite_nfa)
+	for state in append_to_state:
+		prosite_nfa.accept.add(state)
 
-	print(prosite_dfa.run_on_word(valid))
-	min_prosite_dfa = dfa.minimize(prosite_dfa)
-	print(min_prosite_dfa.run_on_word(valid))
-	print("Non minimal DFA transitions table size: " + str(len(prosite_dfa.transitions)))
-	print("Minimal DFA transitions table size: " + str(len(min_prosite_dfa.transitions)))
+	return dfa.minimize(dfa.from_nfa(prosite_nfa))
 
-	print("DFA: " + str(prosite_dfa.transitions.keys()))
-	print("MDFA: " + str(min_prosite_dfa.transitions.keys()))
+if __name__ == '__main__':
+	regex = 'C-G-G-x(4,7)-{ABC}-G-x(3)-C-x(5)-C-x(3,5)-[NHG]-x-[FYWM]-x(2)-Q-C'
+	valid = "CGGVVVVNGVVVCVVVVVCVVVGVMVVQC"
+	valid2 = "CGGVVVVNGVVVCVVVVVCVVVVGVMVVQC"
 
+	
+	import time
 
+	print("COMPILE START")
+	start = time.clock()
+	prosite_dfa = compile(regex)
+	end = time.clock()
+	compile_time = end - start
+	print("COMPILE END")
+
+	time.sleep(1)
+
+	print("DFA MATCH START")
+	is_valid_dfa = False
+	start = time.clock()
+	for i in range(0, 20000):
+		is_valid = prosite_dfa.run_on_word(valid)
+	end = time.clock()
+	dfa_match_time = (end - start) / 20000.0
+	print("DFA MATCH END")
+
+	print("DFA match time: " + str('{0:.20f}'.format(float(dfa_match_time))))
+	print("Compile time: " + str('{0:.20f}'.format(float(compile_time))))
+
+	print(is_valid)
 
 #			elif regex[i] == 'x':
 #				state = ParserState.seen_x

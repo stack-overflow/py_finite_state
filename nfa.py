@@ -1,6 +1,7 @@
 #!/bin/env python3
 # Deterministic Finite State Automaton
 # Copyright (c) 2014 Tomasz Truszkowski
+# All rights reserved.
 
 class NFA:
 	def __init__(self):
@@ -105,7 +106,8 @@ class NFA:
 
 		first_state = self.increment_states()
 
-		self.add_transition(append_to_state, self.epsilon, first_state)
+		for state in append_to_state:
+			self.add_transition(state, self.epsilon, first_state)
 
 		current_state = first_state
 		next_state = -1
@@ -124,7 +126,8 @@ class NFA:
 		first_state = self.increment_states()
 		end_state = self.increment_states()
 
-		self.add_transition(append_to_state, self.epsilon, first_state)
+		for state in append_to_state:
+			self.add_transition(state, self.epsilon, first_state)
 
 		for letter in alphabet:
 			self.add_transition(first_state, letter, end_state)
@@ -135,11 +138,30 @@ class NFA:
 		end_state = create_matcher_func(argument, append_to_state)
 		num_repetition -= 1
 		while num_repetition > 0:
-			other_end_state = create_matcher_func(argument, end_state)
-			end_state = other_end_state
+			end_state = create_matcher_func(argument, end_state)
+			#end_state = other_end_state
 			num_repetition -= 1
 
 		return end_state
+
+	def create_repetition_matcher_experimental(self, range_repetition, create_matcher_func, argument, append_to_state):
+		list_repetition = list(range_repetition)
+		ret_states = []
+		
+		end_state = create_matcher_func(argument, append_to_state)
+
+		num_repetition = 1
+		if num_repetition in range_repetition:
+			ret_states.append(end_state)
+
+		while num_repetition < list_repetition[-1]:
+			end_state = create_matcher_func(argument, [end_state])
+			num_repetition += 1
+			if num_repetition in range_repetition:
+				#print("UNKNOWN")
+				ret_states.append(end_state)
+
+		return ret_states
 
 if __name__ == '__main__':
 	import string
@@ -159,18 +181,30 @@ if __name__ == '__main__':
 		print (word + " was rejected")
 
 	manual_nfa = NFA()
-	kot_end = manual_nfa.create_word_matcher("kot", manual_nfa.start_state)
+	kot_end = manual_nfa.create_word_matcher("kot", [manual_nfa.start_state])
 	manual_nfa.accept.add(kot_end)
 	print("Manual nfa for kot: " + str(manual_nfa.run_on_word("kot")))
 	print("Manual nfa for foreach: " + str(manual_nfa.run_on_word("foreach")))
+	print("DFA states: " + str(len(manual_nfa.transitions.keys())))
 
-	any_end = manual_nfa.create_any_matcher(string.ascii_uppercase, kot_end)
+	any_end = manual_nfa.create_any_matcher(string.ascii_uppercase, [kot_end])
 	manual_nfa.accept.add(any_end)
 	print("Manual nfa for kotO: " + str(manual_nfa.run_on_word("kotO")))
 	print("Manual nfa for koto: " + str(manual_nfa.run_on_word("koto")))
+	print("DFA states: " + str(len(manual_nfa.transitions.keys())))
 
-	rep_end = manual_nfa.create_repetition_matcher(2, manual_nfa.create_word_matcher, "cat", any_end)
-	manual_nfa.accept.add(rep_end)
+	rep_end = manual_nfa.create_repetition_matcher_experimental(range(2, 3), manual_nfa.create_word_matcher, "cat", [any_end])
+	manual_nfa.accept.add(rep_end[0])
 	print("Manual nfa for kotVcatcat: " + str(manual_nfa.run_on_word("kotVcatcat")))
 	print("Manual nfa for kotVcat: " + str(manual_nfa.run_on_word("kotVcat")))
 	print("Manual nfa for kotV: " + str(manual_nfa.run_on_word("kotV")))
+	print("DFA states: " + str(len(manual_nfa.transitions.keys())))
+
+	rep_ends = manual_nfa.create_repetition_matcher_experimental(range(2, 5), manual_nfa.create_any_matcher, string.ascii_uppercase, rep_end)
+	for state in rep_ends:
+		manual_nfa.accept.add(state)
+
+	print("Manual nfa for kotVcatcat: " + str(manual_nfa.run_on_word("kotVcatcatVVVV")))
+	print("DFA states: " + str(len(manual_nfa.transitions.keys())))
+
+
