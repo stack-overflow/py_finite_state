@@ -1,5 +1,5 @@
 #!/bin/env python3
-# Deterministic Finite State Automaton
+# Nondeterministic Finite State Automaton
 # Copyright (c) 2014 Tomasz Truszkowski
 # All rights reserved.
 
