@@ -97,6 +97,7 @@ def compile(regex):
 	create_matcher_func = None
 	append_to_state = [prosite_nfa.start_state]
 
+
 	while i < len(regex):
 		while regex[i] == '-':
 			i += 1
@@ -112,6 +113,9 @@ def compile(regex):
 		elif regex[i] == '{':
 			i, argument = parse_negation(regex, i)
 			create_matcher_func = prosite_nfa.create_any_matcher
+	#	else:
+			# Error - not known symbol
+	#		return None
 
 		i += 1
 
@@ -132,12 +136,13 @@ def compile(regex):
 
 	return dfa.minimize(dfa.from_nfa(prosite_nfa))
 
+
+
 if __name__ == '__main__':
 	regex = 'C-G-G-x(4,7)-{ABC}-G-x(3)-C-x(5)-C-x(3,5)-[NHG]-x-[FYWM]-x(2)-Q-C'
 	valid = "CGGVVVVNGVVVCVVVVVCVVVGVMVVQC"
 	valid2 = "CGGVVVVNGVVVCVVVVVCVVVVGVMVVQC"
 
-	
 	import time
 
 	print("COMPILE START")
@@ -162,12 +167,3 @@ if __name__ == '__main__':
 	print("Compile time: " + str('{0:.20f}'.format(float(compile_time))))
 
 	print(is_valid)
-
-#			elif regex[i] == 'x':
-#				state = ParserState.seen_x
-#			elif regex[i] == '[':
-#				state = ParserState.seen_alternative
-#			elif regex[i] == '{':
-#				state = ParserState.seen_negation
-
-#print(machine_parts)
