@@ -17,7 +17,8 @@ class PrositeMatcher:
 		lexemes = []
 		ranges = []
 
-		current_lexeme = ""
+		lexeme_len = 0
+		lexeme = ""
 		last_start = 0
 		last_accept_pos = -1
 		
@@ -26,7 +27,8 @@ class PrositeMatcher:
 			while i < len(text) and current_state != None:
 				current_state = self.machine.get_next(current_state, text[i])
 				if current_state != None:
-					current_lexeme += text[i]
+					lexeme_len += 1
+					lexeme += text[i]
 
 					if current_state in self.machine.accept:
 						last_accept_pos = i
@@ -37,22 +39,35 @@ class PrositeMatcher:
 
 			if last_accept_pos != -1:
 				i = last_accept_pos + 1
-				valid_lexeme = current_lexeme[:last_accept_pos + 1]
-				ranges.append(range(last_accept_pos - len(valid_lexeme) + 1 , last_accept_pos + 1))
-				lexemes.append(valid_lexeme)
+				valid_lexeme_end = last_accept_pos
+				valid_lexeme_start = valid_lexeme_end - lexeme_len + 1
+				ranges.append(range(valid_lexeme_start, valid_lexeme_end + 1))
+
+				# Not needed as function returns list of positions in original text
+				lexeme = lexeme[:last_accept_pos + 1]
+				lexemes.append(lexeme)
+
 				last_accept_pos = -1
 			else:
 				i += 1
 
-			current_lexeme = ""
+			lexeme_len = 0
+			lexeme = ""
 			current_state = self.machine.start_state
 
 		return lexemes, ranges
 
 if __name__ == '__main__':
 	pm = PrositeMatcher()
-	pm.compile("C-G-G")
+	pm.compile("C-G-G-[AB](4)")
 	print(pm.match("CGG"))
-	matches, ranges = pm.get_matches("CGGAAAACGGaasdsadsadsadCGGdsadCGGCGGCGG")
+	text = "CGGAAAACGGaasdsadsadsadCGGdsadCGGCGGCGG"
+	matches, ranges = pm.get_matches(text)
+
+#	for match in ranges:
+#		for i in match:
+#			print(text[i], end="")
+#		print()
+
 	print(matches)
 	print(ranges)
