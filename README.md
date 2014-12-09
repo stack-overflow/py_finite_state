@@ -1,4 +1,5 @@
-py_finite_state
+
+PROSITE Regular Expression Engine
 ===============
 
-Finite State Automaton in Python
+Implemented using finite automata theory.
