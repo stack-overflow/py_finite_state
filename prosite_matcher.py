@@ -1,3 +1,8 @@
+#!/bin/env python3
+# Prosite regular expressions matcher
+# Copyright (c) 2014 Tomasz Truszkowski
+# All rights reserved.
+
 import prosite_compiler
 
 class PrositeMatcher:

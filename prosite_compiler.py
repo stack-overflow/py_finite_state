@@ -2,6 +2,7 @@
 # Prosite regular expressions parser and compilator
 # Copyright (c) 2014 Tomasz Truszkowski
 # All rights reserved.
+
 import string
 
 import nfa
