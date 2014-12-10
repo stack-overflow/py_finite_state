@@ -165,4 +165,4 @@ if __name__ == '__main__':
 	print("DFA match time: " + str('{0:.20f}'.format(float(dfa_match_time))))
 	print("Compile time: " + str('{0:.20f}'.format(float(compile_time))))
 
-	print(is_valid)
+	print(is_valid == True)
