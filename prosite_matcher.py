@@ -64,7 +64,7 @@ class PrositeMatcher:
 
 if __name__ == '__main__':
 	pm = PrositeMatcher()
-	pm.compile("C-G-G-[AB](4)")
+	pm.compile("C-G-G")
 	print(pm.match("CGG"))
 	text = "CGGAAAACGGaasdsadsadsadCGGdsadCGGCGGCGG"
 	matches, ranges = pm.get_matches(text)

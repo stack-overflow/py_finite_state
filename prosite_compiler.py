@@ -99,7 +99,7 @@ def compile(regex):
 	append_to_state = [prosite_nfa.start_state]
 
 
-	while i < len(regex):
+	while i < len(regex) and regex[i] is not '.':
 		while regex[i] == '-':
 			i += 1
 		if regex[i].isupper():
@@ -152,8 +152,6 @@ if __name__ == '__main__':
 	end = time.clock()
 	compile_time = end - start
 	print("COMPILE END")
-
-	time.sleep(1)
 
 	print("DFA MATCH START")
 	is_valid_dfa = False
