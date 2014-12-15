@@ -46,7 +46,7 @@ class PrositeMatcher:
 				i = last_accept_pos + 1
 				valid_lexeme_end = last_accept_pos
 				valid_lexeme_start = valid_lexeme_end - lexeme_len + 1
-				ranges.append(range(valid_lexeme_start, valid_lexeme_end + 1))
+				ranges.append(((valid_lexeme_start, valid_lexeme_end + 1)))
 
 				# Not needed as function returns list of positions in original text
 				lexeme = lexeme[:last_accept_pos + 1]
