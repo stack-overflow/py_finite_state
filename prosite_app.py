@@ -16,8 +16,6 @@ if __name__ == '__main__':
 	prositeMatcher.compile(regex)
 	matches, ranges = prositeMatcher.get_matches(sequence)
 
-	print(matches, ranges)
-
 	print("Found patterns: ", end="")
 
 	if (len(matches) > 0):
@@ -38,5 +36,11 @@ if __name__ == '__main__':
 	else:
 
 		print(sequence)
+
+	print("")
+
+	for elem in list(zip(matches, ranges)):
+		print(elem[0], end=" ")
+		print(elem[1])
 
 	print("")
