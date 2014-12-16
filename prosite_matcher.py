@@ -9,14 +9,25 @@ class PrositeMatcher:
 	def __init__(self):
 		self.machine = None
 		self.pattern = None
+		self.match_begin = False
+		self.match_end = False
 
 	def compile(self, pattern):
+		if pattern and pattern[0] == '<':
+			self.match_begin = True
+			pattern = pattern[1:]
+		if pattern and pattern[-1] == '>':
+			self.match_end = True
+			pattern = pattern[:-1]
+
 		self.pattern = pattern
 		self.machine = prosite_compiler.compile(pattern)
 
 	def match(self, word):
 		return self.machine.run_on_word(word)
 
+	def rewind():
+		
 	def get_matches(self, text):
 		current_state = self.machine.start_state
 		lexemes = []
@@ -46,6 +57,17 @@ class PrositeMatcher:
 				i = last_accept_pos + 1
 				valid_lexeme_end = last_accept_pos
 				valid_lexeme_start = valid_lexeme_end - lexeme_len + 1
+
+				if self.match_begin and valid_lexeme_start != 0:
+					return [], []
+
+				if self.match_end and (valid_lexeme_end + 1) != len(text):
+					last_accept_pos = -1
+					lexeme_len = 0
+					lexeme = ""
+					current_state = self.machine.start_state
+					continue
+
 				ranges.append(((valid_lexeme_start, valid_lexeme_end + 1)))
 
 				# Not needed as function returns list of positions in original text
@@ -56,6 +78,9 @@ class PrositeMatcher:
 			else:
 				i += 1
 
+			if self.match_begin:
+				break
+
 			lexeme_len = 0
 			lexeme = ""
 			current_state = self.machine.start_state
@@ -64,7 +89,7 @@ class PrositeMatcher:
 
 if __name__ == '__main__':
 	pm = PrositeMatcher()
-	pm.compile("C-G-G")
+	pm.compile("<C-G-G>")
 	print(pm.match("CGG"))
 	text = "CGGAAAACGGaasdsadsadsadCGGdsadCGGCGGCGG"
 	matches, ranges = pm.get_matches(text)
