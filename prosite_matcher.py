@@ -26,8 +26,6 @@ class PrositeMatcher:
 	def match(self, word):
 		return self.machine.run_on_word(word)
 
-	def rewind():
-		
 	def get_matches(self, text):
 		current_state = self.machine.start_state
 		lexemes = []
@@ -89,7 +87,7 @@ class PrositeMatcher:
 
 if __name__ == '__main__':
 	pm = PrositeMatcher()
-	pm.compile("<C-G-G>")
+	pm.compile("C-G-G>")
 	print(pm.match("CGG"))
 	text = "CGGAAAACGGaasdsadsadsadCGGdsadCGGCGGCGG"
 	matches, ranges = pm.get_matches(text)
