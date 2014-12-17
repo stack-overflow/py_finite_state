@@ -12,16 +12,14 @@ if __name__ == '__main__':
 	sequence = input("Sequence: ")
 	regex = input("Regular expression: ")
 
-	if sequence != None and sequence != "" and regex != None and regex != "":
+	if sequence is not None and sequence != "" and regex is not None and regex != "":
 
 		prositeMatcher = prosite_matcher.PrositeMatcher()
 		prositeMatcher.compile(regex)
 		matches, ranges = prositeMatcher.get_matches(sequence)
 
-		print("Found patterns: ", end="")
-
 		if (len(matches) > 0):
-
+			print("\nFound patterns: ", end="")
 			print(sequence[ 0 : ranges[0][0] ], end="")
 
 			for i in range(0, len(matches)):
@@ -37,7 +35,7 @@ if __name__ == '__main__':
 
 		else:
 
-			print(sequence)
+			print('\nNo matches')
 
 		print("")
 
