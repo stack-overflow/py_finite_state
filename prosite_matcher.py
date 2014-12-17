@@ -1,6 +1,6 @@
 #!/bin/env python3
 # Prosite regular expressions matcher
-# Copyright (c) 2014 Tomasz Truszkowski
+# Copyright (c) 2014 Tomasz Truszkowski, Mateusz Zych, Kamil Majcher
 # All rights reserved.
 
 import prosite_compiler
